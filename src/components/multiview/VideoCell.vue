@@ -33,6 +33,7 @@
           playsinline: 1,
           cc_lang_pref: getLang,
           hl: getLang,
+          hd: 1,
         }"
         :mute="muted"
         manual-update

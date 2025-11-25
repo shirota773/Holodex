@@ -21,6 +21,7 @@
           cc_lang_pref: getLang,
           hl: getLang,
           iv_load_policy: 3,
+          hd: 1,
         }"
         v-on="$listeners"
         @ready="ready"
