@@ -33,7 +33,8 @@
           playsinline: 1,
           cc_lang_pref: getLang,
           hl: getLang,
-          hd: 1,
+          controls: 1,
+          vq: 'hd1080',
         }"
         :mute="muted"
         manual-update

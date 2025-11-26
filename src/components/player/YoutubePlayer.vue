@@ -71,9 +71,45 @@ export default {
         this.player.on("error", this.playerError);
     },
     methods: {
+        playerReady(player) {
+            // Call parent mixin's playerReady
+            PlayerMixin.methods.playerReady.call(this, player);
+
+            // Set quality to HD after player is ready
+            setTimeout(() => {
+                this.setQualityToHD();
+            }, 1000);
+        },
         playerStateChange(e) {
             if (e.data !== null && e.data !== UNSTARTED) {
                 this.$emit(this.events[e.data], e.target);
+
+                // Try to set quality when video starts playing
+                if (e.data === PLAYING) {
+                    this.setQualityToHD();
+                }
+            }
+        },
+        async setQualityToHD() {
+            try {
+                // Try to set quality to HD using available methods
+                const availableQualities = await this.player.getAvailableQualityLevels();
+                console.log("Available qualities:", availableQualities);
+
+                // Prefer higher qualities
+                const preferredQualities = ['hd1080', 'hd720', 'large'];
+                const qualityToSet = preferredQualities.find(q => availableQualities.includes(q)) || availableQualities[0];
+
+                if (qualityToSet && typeof this.player.setPlaybackQualityRange === 'function') {
+                    console.log("Setting quality range to:", qualityToSet);
+                    this.player.setPlaybackQualityRange(qualityToSet);
+                }
+                if (qualityToSet && typeof this.player.setPlaybackQuality === 'function') {
+                    console.log("Setting quality to:", qualityToSet);
+                    this.player.setPlaybackQuality(qualityToSet);
+                }
+            } catch (error) {
+                console.warn("Could not set video quality:", error);
             }
         },
         updatePlayer(videoId) {

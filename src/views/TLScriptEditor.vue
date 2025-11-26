@@ -2022,7 +2022,8 @@ export default {
                 videoId: VID,
                 playerVars: {
                     playsinline: 1,
-                    hd: 1,
+                    controls: 1,
+                    vq: 'hd1080',
                 },
                 events: {
                     onReady: this.readyStateYT.bind(this),
